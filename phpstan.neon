@@ -1,0 +1,13 @@
+includes:
+    - ./vendor/larastan/larastan/extension.neon
+    - ./vendor/phpstan/phpstan-mockery/extension.neon
+
+parameters:
+
+    level: 9
+
+    checkMissingIterableValueType: false
+
+    paths:
+        - src/
+        - tests/

@@ -1,0 +1,48 @@
+{
+    "name": "sunaoka/laravel-postgres-range",
+    "description": "PostgreSQL Range Types for Laravel.",
+    "keywords": ["Laravel", "PostgreSQL", "Range", "Type"],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "sunaoka",
+            "email": "sunaoka@pocari.org"
+        }
+    ],
+    "require": {
+        "php": "^7.3 || ^8.0",
+        "ext-json": "*",
+        "illuminate/database": "^8.43 || ^9.0 || ^10.0 || ^11.0"
+    },
+    "require-dev": {
+        "larastan/larastan": "^1.0 || ^2.0",
+        "orchestra/testbench": "^6.19 || ^7.0 || ^8.0 || ^9.0",
+        "phpstan/phpstan-mockery": "^1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Sunaoka\\LaravelPostgres\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Sunaoka\\LaravelPostgres\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+            ],
+            "aliases": {
+            }
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
