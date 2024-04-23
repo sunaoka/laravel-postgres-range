@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Sunaoka\LaravelPostgres\Types;
 
+use Sunaoka\LaravelPostgres\Types\Bounds\Lower;
+use Sunaoka\LaravelPostgres\Types\Bounds\Upper;
+
 /**
  * @template TType
  * @template TBound
@@ -74,10 +77,8 @@ abstract class Range
     /**
      * @param  TBound|null  $lower
      * @param  TBound|null  $upper
-     * @param  Bounds::INCLUSIVE_LOWER|Bounds::EXCLUSIVE_LOWER  $lowerBound
-     * @param  Bounds::INCLUSIVE_UPPER|Bounds::EXCLUSIVE_UPPER  $upperBound
      */
-    public function __construct($lower = null, $upper = null, string $lowerBound = Bounds::INCLUSIVE_LOWER, string $upperBound = Bounds::EXCLUSIVE_UPPER)
+    public function __construct($lower = null, $upper = null, Lower $lowerBound = Lower::Inclusive, Upper $upperBound = Upper::Exclusive)
     {
         $this->lower = $lower ?: null;
         $this->upper = $upper ?: null;
@@ -94,6 +95,6 @@ abstract class Range
      */
     public function __toString()
     {
-        return "{$this->bounds()->lower()}{$this->lower()},{$this->upper()}{$this->bounds()->upper()}";
+        return "{$this->bounds()->lower()->value}{$this->lower()},{$this->upper()}{$this->bounds()->upper()->value}";
     }
 }
