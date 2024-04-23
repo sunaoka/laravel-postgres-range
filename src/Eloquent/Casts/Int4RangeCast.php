@@ -19,6 +19,6 @@ class Int4RangeCast extends RangeCast
      */
     public function factory(array $matches): Range
     {
-        return new Int4Range($matches[2], $matches[3], $matches[1], $matches[4]);
+        return new Int4Range($matches[0], $matches[1], $matches[2], $matches[3]);
     }
 }

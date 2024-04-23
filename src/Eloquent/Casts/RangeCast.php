@@ -61,14 +61,16 @@ abstract class RangeCast implements CastsAttributes
         }
 
         /** @var array{0: string, 1: '['|'(', 2: string, 3: string, 4: ']'|')'} $matches */
-        $matches[1] = Lower::from($matches[1]);
-        $matches[4] = Upper::from($matches[4]);
-
         if (strtolower($matches[3]) === 'infinity') {
             $matches[3] = null;
         }
 
-        return $matches;
+        return [
+            $matches[2] !== '' ? $matches[2] : null,
+            $matches[3] !== '' ? $matches[3] : null,
+            Lower::from($matches[1]),
+            Upper::from($matches[4]),
+        ];
     }
 
     /**
