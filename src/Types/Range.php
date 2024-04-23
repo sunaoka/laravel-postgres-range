@@ -21,14 +21,9 @@ abstract class Range
     protected $upper;
 
     /**
-     * @var string
+     * @var Bounds
      */
-    protected $upperBound;
-
-    /**
-     * @var string
-     */
-    protected $lowerBound;
+    protected $bounds;
 
     /**
      * Get lower bound
@@ -77,17 +72,21 @@ abstract class Range
     abstract protected function transform($boundary);
 
     /**
-     * Range constructor.
-     *
      * @param  TBound|null  $lower
      * @param  TBound|null  $upper
+     * @param  Bounds::INCLUSIVE_LOWER|Bounds::EXCLUSIVE_LOWER  $lowerBound
+     * @param  Bounds::INCLUSIVE_UPPER|Bounds::EXCLUSIVE_UPPER  $upperBound
      */
-    public function __construct($lower = null, $upper = null, string $lowerBound = '[', string $upperBound = ')')
+    public function __construct($lower = null, $upper = null, string $lowerBound = Bounds::INCLUSIVE_LOWER, string $upperBound = Bounds::EXCLUSIVE_UPPER)
     {
         $this->lower = $lower ?: null;
         $this->upper = $upper ?: null;
-        $this->upperBound = $lowerBound;
-        $this->lowerBound = $upperBound;
+        $this->bounds = new Bounds($lowerBound, $upperBound);
+    }
+
+    public function bounds(): Bounds
+    {
+        return $this->bounds;
     }
 
     /**
@@ -95,6 +94,6 @@ abstract class Range
      */
     public function __toString()
     {
-        return "{$this->upperBound}{$this->lower},{$this->upper}{$this->lowerBound}";
+        return "{$this->bounds()->lower()}{$this->lower},{$this->upper}{$this->bounds()->upper()}";
     }
 }
