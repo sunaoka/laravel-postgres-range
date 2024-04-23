@@ -30,5 +30,13 @@ class Int4RangeCastTest extends TestCase
         $actual = $cast->get(new TestModel(), 'int4_range', '', []);
 
         self::assertNull($actual);
+
+        $actual = $cast->get(new TestModel(), 'int4_range', null, []);
+
+        self::assertNull($actual);
+
+        $actual = $cast->get(new TestModel(), 'int4_range', 'malformed range literal', []);
+
+        self::assertNull($actual);
     }
 }

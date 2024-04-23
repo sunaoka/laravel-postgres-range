@@ -30,5 +30,13 @@ class TsRangeCastTest extends TestCase
         $actual = $cast->get(new TestModel(), 'ts_range', '', []);
 
         self::assertNull($actual);
+
+        $actual = $cast->get(new TestModel(), 'ts_range', null, []);
+
+        self::assertNull($actual);
+
+        $actual = $cast->get(new TestModel(), 'ts_range', 'malformed range literal', []);
+
+        self::assertNull($actual);
     }
 }

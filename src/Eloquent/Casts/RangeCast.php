@@ -19,14 +19,17 @@ abstract class RangeCast implements CastsAttributes
      * Transform the attribute from the underlying model values.
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @param  string  $value
+     * @param  string|null  $value
      * @param  array<string, mixed>  $attributes
      * @return TGet|null
      */
     public function get($model, string $key, $value, array $attributes)
     {
-        $matches = $this->parse($value);
+        if ($value === null) {
+            return null;
+        }
 
+        $matches = $this->parse($value);
         if (empty($matches)) {
             return null;
         }
