@@ -23,10 +23,7 @@ abstract class Range implements \Stringable
      */
     protected $upper;
 
-    /**
-     * @var Bounds
-     */
-    protected $bounds;
+    protected Bounds $bounds;
 
     /**
      * Get lower bound
