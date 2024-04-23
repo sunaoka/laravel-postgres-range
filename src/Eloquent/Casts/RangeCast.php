@@ -54,8 +54,13 @@ abstract class RangeCast implements CastsAttributes
 
     protected function parse(string $value): array
     {
-        $matches = [];
-        preg_match('/([\[(])"?(.*?)"?,"?(.*?)"?([])])/', $value, $matches);
+        if (preg_match('/([\[(])"?(.*?)"?,"?(.*?)"?([])])/', $value, $matches) !== 1) {
+            return [];
+        }
+
+        if (strtolower($matches[3]) === 'infinity') {
+            $matches[3] = null;
+        }
 
         return $matches;
     }

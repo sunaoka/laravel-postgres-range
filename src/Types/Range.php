@@ -94,6 +94,6 @@ abstract class Range
      */
     public function __toString()
     {
-        return "{$this->bounds()->lower()}{$this->lower},{$this->upper}{$this->bounds()->upper()}";
+        return "{$this->bounds()->lower()}{$this->lower()},{$this->upper()}{$this->bounds()->upper()}";
     }
 }

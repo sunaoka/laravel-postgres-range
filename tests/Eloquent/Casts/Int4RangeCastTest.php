@@ -22,21 +22,24 @@ class Int4RangeCastTest extends TestCase
     public function testGet(): void
     {
         $cast = new Int4RangeCast();
-        $actual = $cast->get(new TestModel(), 'int4_range', '[1,3)', []);
 
+        $actual = $cast->get(new TestModel(), 'int4_range', '[1,3)', []);
         self::assertInstanceOf(Int4Range::class, $actual);
         self::assertSame('[1,3)', (string) $actual);
 
         $actual = $cast->get(new TestModel(), 'int4_range', '', []);
-
         self::assertNull($actual);
 
         $actual = $cast->get(new TestModel(), 'int4_range', null, []);
-
         self::assertNull($actual);
 
         $actual = $cast->get(new TestModel(), 'int4_range', 'malformed range literal', []);
-
         self::assertNull($actual);
+
+        $actual = $cast->get(new TestModel(), 'int4_range', '[1,)', []);
+        self::assertSame('[1,)', (string) $actual);
+
+        $actual = $cast->get(new TestModel(), 'int4_range', '[,10)', []);
+        self::assertSame('[,10)', (string) $actual);
     }
 }

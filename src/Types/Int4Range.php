@@ -11,6 +11,6 @@ class Int4Range extends Range
 {
     protected function transform($boundary): int
     {
-        return $boundary;
+        return (int) $boundary;
     }
 }
