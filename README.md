@@ -1,18 +1,18 @@
 # PostgreSQL Range Types for Laravel 8.x to 11
 
-[![Latest Stable Version](https://poser.pugx.org/sunaoka/sunaoka/laravel-postgres-range/v/stable)](https://packagist.org/packages/sunaoka/sunaoka/laravel-postgres-range)
-[![License](https://poser.pugx.org/sunaoka/sunaoka/laravel-postgres-range/license)](https://packagist.org/packages/sunaoka/sunaoka/laravel-postgres-range)
-[![PHP from Packagist](https://img.shields.io/packagist/php-v/sunaoka/sunaoka/laravel-postgres-range)](composer.json)
+[![Latest Stable Version](https://poser.pugx.org/sunaoka/laravel-postgres-range/v/stable)](https://packagist.org/packages/sunaoka/laravel-postgres-range)
+[![License](https://poser.pugx.org/sunaoka/laravel-postgres-range/license)](https://packagist.org/packages/sunaoka/laravel-postgres-range)
+[![PHP from Packagist](https://img.shields.io/packagist/php-v/sunaoka/laravel-postgres-range)](composer.json)
 [![Laravel](https://img.shields.io/badge/laravel-%3E=%208.x-red)](https://laravel.com/)
-[![Test](https://github.com/sunaoka/sunaoka/laravel-postgres-range/actions/workflows/test.yml/badge.svg)](https://github.com/sunaoka/sunaoka/laravel-postgres-range/actions/workflows/test.yml)
-[![codecov](https://codecov.io/gh/sunaoka/sunaoka/laravel-postgres-range/branch/develop/graph/badge.svg)](https://codecov.io/gh/sunaoka/sunaoka/laravel-postgres-range)
+[![Test](https://github.com/sunaoka/laravel-postgres-range/actions/workflows/test.yml/badge.svg)](https://github.com/sunaoka/laravel-postgres-range/actions/workflows/test.yml)
+[![codecov](https://codecov.io/gh/sunaoka/laravel-postgres-range/branch/develop/graph/badge.svg)](https://codecov.io/gh/sunaoka/laravel-postgres-range)
 
 ----
 
 ## Installation
 
 ```bash
-composer require sunaoka/sunaoka/laravel-postgres-range
+composer require sunaoka/laravel-postgres-range
 ```
 
 ## Features
