@@ -7,6 +7,7 @@ namespace Sunaoka\LaravelPostgres\Tests\Eloquent\Casts;
 use Sunaoka\LaravelPostgres\Eloquent\Casts\TsRangeCast;
 use Sunaoka\LaravelPostgres\Tests\Models\TestModel;
 use Sunaoka\LaravelPostgres\Tests\TestCase;
+use Sunaoka\LaravelPostgres\Types\TsRange;
 
 class TsRangeCastTest extends TestCase
 {
@@ -23,6 +24,7 @@ class TsRangeCastTest extends TestCase
         $cast = new TsRangeCast();
         $actual = $cast->get(new TestModel(), 'ts_range', '[2020-10-01 00:00:00,2020-10-01 23:59:59)', []);
 
+        self::assertInstanceOf(TsRange::class, $actual);
         self::assertSame('[2020-10-01 00:00:00,2020-10-01 23:59:59)', (string) $actual);
 
         $actual = $cast->get(new TestModel(), 'ts_range', '', []);

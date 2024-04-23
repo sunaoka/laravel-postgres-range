@@ -7,6 +7,7 @@ namespace Sunaoka\LaravelPostgres\Tests\Eloquent\Casts;
 use Sunaoka\LaravelPostgres\Eloquent\Casts\Int4RangeCast;
 use Sunaoka\LaravelPostgres\Tests\Models\TestModel;
 use Sunaoka\LaravelPostgres\Tests\TestCase;
+use Sunaoka\LaravelPostgres\Types\Int4Range;
 
 class Int4RangeCastTest extends TestCase
 {
@@ -23,6 +24,7 @@ class Int4RangeCastTest extends TestCase
         $cast = new Int4RangeCast();
         $actual = $cast->get(new TestModel(), 'int4_range', '[1,3)', []);
 
+        self::assertInstanceOf(Int4Range::class, $actual);
         self::assertSame('[1,3)', (string) $actual);
 
         $actual = $cast->get(new TestModel(), 'int4_range', '', []);
