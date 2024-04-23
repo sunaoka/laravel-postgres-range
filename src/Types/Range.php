@@ -11,7 +11,7 @@ use Sunaoka\LaravelPostgres\Types\Bounds\Upper;
  * @template TType
  * @template TBound
  */
-abstract class Range
+abstract class Range implements \Stringable
 {
     /**
      * @var TBound|null
