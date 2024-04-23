@@ -3,28 +3,31 @@
          xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
          bootstrap="vendor/autoload.php"
          colors="true"
-         cacheResultFile=".build/.phpunit.result.cache"
-         beStrictAboutCoversAnnotation="true"
+         cacheDirectory=".build/.phpunit.cache"
+         beStrictAboutCoverageMetadata="true"
 >
 
-    <testsuites>
-        <testsuite name="Test Suites">
-            <directory suffix="Test.php">./tests</directory>
-        </testsuite>
-    </testsuites>
+  <testsuites>
+    <testsuite name="Test Suites">
+      <directory>./tests</directory>
+    </testsuite>
+  </testsuites>
 
-    <coverage processUncoveredFiles="true" cacheDirectory=".build/coverage/.cache">
-        <include>
-            <directory suffix=".php">./src</directory>
-        </include>
-        <report>
-            <html outputDirectory=".build/coverage"/>
-            <text outputFile="php://stdout" showOnlySummary="true"/>
-        </report>
-    </coverage>
+  <coverage>
+    <report>
+      <html outputDirectory=".build/coverage"/>
+      <text outputFile="php://stdout" showOnlySummary="true"/>
+    </report>
+  </coverage>
 
-    <php>
-        <env name="DB_CONNECTION" value="pgsql"/>
-    </php>
+  <php>
+    <env name="DB_CONNECTION" value="pgsql"/>
+  </php>
+
+  <source>
+    <include>
+      <directory>./src</directory>
+    </include>
+  </source>
 
 </phpunit>
