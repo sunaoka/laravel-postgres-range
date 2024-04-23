@@ -32,7 +32,7 @@ abstract class Range implements \Stringable
      */
     public function lower()
     {
-        return $this->lower ? $this->transform($this->lower) : null;
+        return $this->lower !== null ? $this->transform($this->lower) : null;
     }
 
     /**
@@ -42,7 +42,7 @@ abstract class Range implements \Stringable
      */
     public function upper()
     {
-        return $this->upper ? $this->transform($this->upper) : null;
+        return $this->upper !== null ? $this->transform($this->upper) : null;
     }
 
     /**
@@ -77,14 +77,30 @@ abstract class Range implements \Stringable
      */
     public function __construct($lower = null, $upper = null, Lower $lowerBound = Lower::Inclusive, Upper $upperBound = Upper::Exclusive)
     {
-        $this->lower = $lower ?: null;
-        $this->upper = $upper ?: null;
+        $this->lower = $lower;
+        $this->upper = $upper;
         $this->bounds = new Bounds($lowerBound, $upperBound);
     }
 
     public function bounds(): Bounds
     {
         return $this->bounds;
+    }
+
+    /**
+     * @return self<TType, TBound>
+     */
+    public function toInclusive(): self
+    {
+        throw new \LogicException('Not implemented');
+    }
+
+    /**
+     * @return self<TType, TBound>
+     */
+    public function toExclusive(): self
+    {
+        throw new \LogicException('Not implemented');
     }
 
     /**
