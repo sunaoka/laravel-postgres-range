@@ -40,6 +40,18 @@ class Int4RangeTest extends TestCase
         self::assertSame('(0,3]', (string) $int4Range);
     }
 
+    public function testToArray(): void
+    {
+        $actual = (new Int4Range(0, 3, Lower::Exclusive, Upper::Exclusive))->toArray();
+        self::assertSame([0, 3], $actual);
+
+        $actual = (new Int4Range(null, 2, Lower::Inclusive, Upper::Exclusive))->toArray();
+        self::assertSame([null, 2], $actual);
+
+        $actual = (new Int4Range(0, null, Lower::Exclusive, Upper::Inclusive))->toArray();
+        self::assertSame([0, null], $actual);
+    }
+
     public function testToInclusive(): void
     {
         // [1,3) => [1,2]

@@ -26,4 +26,35 @@ class TsRangeTest extends TestCase
 
         self::assertSame('(2020-10-01 00:00:00,2020-10-01 23:59:59]', (string) $tsRange);
     }
+
+    public function testToArray(): void
+    {
+        $actual = (new TsRange('2020-10-01 00:00:00', '2020-10-01 23:59:59', Lower::Exclusive, Upper::Exclusive))->toArray();
+        self::assertSame('2020-10-01 00:00:00', $actual[0]?->format('Y-m-d H:i:s'));
+        self::assertSame('2020-10-01 23:59:59', $actual[1]?->format('Y-m-d H:i:s'));
+
+        $actual = (new TsRange(null, '2020-10-01 23:59:59', Lower::Inclusive, Upper::Exclusive))->toArray();
+        self::assertSame(null, $actual[0]);
+        self::assertSame('2020-10-01 23:59:59', $actual[1]?->format('Y-m-d H:i:s'));
+
+        $actual = (new TsRange('2020-10-01 00:00:00', null, Lower::Exclusive, Upper::Inclusive))->toArray();
+        self::assertSame('2020-10-01 00:00:00', $actual[0]?->format('Y-m-d H:i:s'));
+        self::assertSame(null, $actual[1]);
+    }
+
+    public function testToInclusive(): void
+    {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('Not implemented');
+
+        (new TsRange('2020-10-01 00:00:00', '2020-10-01 23:59:59', Lower::Inclusive, Upper::Exclusive))->toInclusive();
+    }
+
+    public function testToExclusive(): void
+    {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('Not implemented');
+
+        (new TsRange('2020-10-01 00:00:00', '2020-10-01 23:59:59', Lower::Inclusive, Upper::Exclusive))->toExclusive();
+    }
 }
