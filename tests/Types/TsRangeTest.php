@@ -41,4 +41,20 @@ class TsRangeTest extends TestCase
         self::assertSame('2020-10-01 00:00:00', $actual[0]?->format('Y-m-d H:i:s'));
         self::assertSame(null, $actual[1]);
     }
+
+    public function testToInclusive(): void
+    {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('Not implemented');
+
+        (new TsRange('2020-10-01 00:00:00', '2020-10-01 23:59:59', Lower::Inclusive, Upper::Exclusive))->toInclusive();
+    }
+
+    public function testToExclusive(): void
+    {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('Not implemented');
+
+        (new TsRange('2020-10-01 00:00:00', '2020-10-01 23:59:59', Lower::Inclusive, Upper::Exclusive))->toExclusive();
+    }
 }
