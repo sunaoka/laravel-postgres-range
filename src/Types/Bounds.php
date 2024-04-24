@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace Sunaoka\LaravelPostgres\Types;
 
+use Illuminate\Contracts\Support\Arrayable;
 use Sunaoka\LaravelPostgres\Types\Bounds\Lower;
 use Sunaoka\LaravelPostgres\Types\Bounds\Upper;
 
-final class Bounds
+/**
+ * @implements  Arrayable<int, Lower|Upper>
+ */
+final class Bounds implements Arrayable
 {
     private Lower $lower;
 
@@ -27,5 +31,13 @@ final class Bounds
     public function upper(): Upper
     {
         return $this->upper;
+    }
+
+    /**
+     * @return array<int, Lower|Upper>
+     */
+    public function toArray(): array
+    {
+        return [$this->lower(), $this->upper()];
     }
 }

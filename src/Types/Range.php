@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace Sunaoka\LaravelPostgres\Types;
 
+use Illuminate\Contracts\Support\Arrayable;
 use Sunaoka\LaravelPostgres\Types\Bounds\Lower;
 use Sunaoka\LaravelPostgres\Types\Bounds\Upper;
 
 /**
  * @template TType
  * @template TBound
+ *
+ * @implements  Arrayable<int, TType|null>
  */
-abstract class Range implements \Stringable
+abstract class Range implements \Stringable, Arrayable
 {
     /**
      * @var TBound|null
@@ -109,5 +112,13 @@ abstract class Range implements \Stringable
     public function __toString()
     {
         return "{$this->bounds()->lower()->value}{$this->lower()},{$this->upper()}{$this->bounds()->upper()->value}";
+    }
+
+    /**
+     * @return array<int, TType|null>
+     */
+    public function toArray(): array
+    {
+        return [$this->lower(), $this->upper()];
     }
 }
