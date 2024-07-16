@@ -14,6 +14,11 @@ use Sunaoka\LaravelPostgres\Types\Bounds\Upper;
  */
 class DateRange extends Range
 {
+    /**
+     * @use Concerns\Boundary<Carbon|null>
+     */
+    use Concerns\Boundary;
+
     private string $format;
 
     public function __construct(
@@ -26,26 +31,15 @@ class DateRange extends Range
     ) {
         $this->format = $format;
 
+        $lower = optional($lower, $this->transform(...));
+        $upper = optional($upper, $this->transform(...));
+
         if ($canonicalize) {
-            [$lower, $upper, $lowerBound, $upperBound] = $this->canonicalize($lower, $upper, $lowerBound, $upperBound);
+            [$lower, $lowerBound] = $this->toInclusiveLower($lower, $lowerBound);
+            [$upper, $upperBound] = $this->toExclusiveUpper($upper, $upperBound);
         }
 
         parent::__construct($lower, $upper, $lowerBound, $upperBound);
-    }
-
-    protected function canonicalize(?string $lower, ?string $upper, Lower $lowerBound, Upper $upperBound): array
-    {
-        if ($lower !== null && $lowerBound === Lower::Exclusive) {
-            $lower = Date::parse($lower)->addDay()->format($this->format);
-            $lowerBound = Lower::Inclusive;
-        }
-
-        if ($upper !== null && $upperBound === Upper::Inclusive) {
-            $upper = Date::parse($upper)->addDay()->format($this->format);
-            $upperBound = Upper::Exclusive;
-        }
-
-        return [$lower, $upper, $lowerBound, $upperBound];
     }
 
     /**
@@ -58,32 +52,18 @@ class DateRange extends Range
 
     public function toInclusive(): self
     {
-        $lower = $this->lower();
-        if ($lower !== null && $this->bounds()->lower() === Lower::Exclusive) {
-            $lower = $lower->addDay();
-        }
+        [$lower, $lowerBound] = $this->toInclusiveLower($this->lower(), $this->bounds()->lower());
+        [$upper, $upperBound] = $this->toInclusiveUpper($this->upper(), $this->bounds()->upper());
 
-        $upper = $this->upper();
-        if ($upper !== null && $this->bounds()->upper() === Upper::Exclusive) {
-            $upper = $upper->subDay();
-        }
-
-        return new self($lower?->format($this->format), $upper?->format($this->format), Lower::Inclusive, Upper::Inclusive, $this->format, false);
+        return new self($lower, $upper, $lowerBound, $upperBound, $this->format, false);
     }
 
     public function toExclusive(): self
     {
-        $lower = $this->lower();
-        if ($lower !== null && $this->bounds()->lower() === Lower::Inclusive) {
-            $lower = $lower->subDay();
-        }
+        [$lower, $lowerBound] = $this->toExclusiveLower($this->lower(), $this->bounds()->lower());
+        [$upper, $upperBound] = $this->toExclusiveUpper($this->upper(), $this->bounds()->upper());
 
-        $upper = $this->upper();
-        if ($upper !== null && $this->bounds()->upper() === Upper::Inclusive) {
-            $upper = $upper->addDay();
-        }
-
-        return new self($lower?->format($this->format), $upper?->format($this->format), Lower::Exclusive, Upper::Exclusive, $this->format, false);
+        return new self($lower, $upper, $lowerBound, $upperBound, $this->format, false);
     }
 
     public function __toString()
@@ -105,5 +85,21 @@ class DateRange extends Range
             $upper,
             $this->bounds()->upper()->value
         );
+    }
+
+    /**
+     * @param  Carbon|null  $value
+     */
+    private function inclement(mixed $value): ?Carbon
+    {
+        return $value?->addDay();
+    }
+
+    /**
+     * @param  Carbon|null  $value
+     */
+    private function decrement(mixed $value): ?Carbon
+    {
+        return $value?->subDay();
     }
 }

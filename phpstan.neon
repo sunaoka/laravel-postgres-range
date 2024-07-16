@@ -12,3 +12,6 @@ parameters:
 
     ignoreErrors:
         - identifier: missingType.iterableValue
+        - message: '!Parameter #2 \$callback of function optional expects \(callable\(.*\): .*\)\|null, Closure\(.*\): .* given!'
+          identifier: argument.type
+          path: *src/Types/*Range.php
