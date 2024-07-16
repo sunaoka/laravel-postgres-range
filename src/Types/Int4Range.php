@@ -16,16 +16,19 @@ class Int4Range extends Range
         $lower = null,
         $upper = null,
         Lower $lowerBound = Lower::Inclusive,
-        Upper $upperBound = Upper::Exclusive
+        Upper $upperBound = Upper::Exclusive,
+        bool $canonicalize = true
     ) {
-        if ($lower !== null && $lowerBound === Lower::Exclusive) {
-            $lower++;
-            $lowerBound = Lower::Inclusive;
-        }
+        if ($canonicalize) {
+            if ($lower !== null && $lowerBound === Lower::Exclusive) {
+                $lower++;
+                $lowerBound = Lower::Inclusive;
+            }
 
-        if ($upper !== null && $upperBound === Upper::Inclusive) {
-            $upper++;
-            $upperBound = Upper::Exclusive;
+            if ($upper !== null && $upperBound === Upper::Inclusive) {
+                $upper++;
+                $upperBound = Upper::Exclusive;
+            }
         }
 
         parent::__construct($lower, $upper, $lowerBound, $upperBound);
@@ -34,5 +37,35 @@ class Int4Range extends Range
     protected function transform($boundary): int
     {
         return (int) $boundary;
+    }
+
+    public function toInclusive(): self
+    {
+        $lower = $this->lower();
+        if ($lower !== null && $this->bounds()->lower() === Lower::Exclusive) {
+            $lower++;
+        }
+
+        $upper = $this->upper();
+        if ($upper !== null && $this->bounds()->upper() === Upper::Exclusive) {
+            $upper--;
+        }
+
+        return new self($lower, $upper, Lower::Inclusive, Upper::Inclusive, false);
+    }
+
+    public function toExclusive(): self
+    {
+        $lower = $this->lower();
+        if ($lower !== null && $this->bounds()->lower() === Lower::Inclusive) {
+            $lower--;
+        }
+
+        $upper = $this->upper();
+        if ($upper !== null && $this->bounds()->upper() === Upper::Inclusive) {
+            $upper++;
+        }
+
+        return new self($lower, $upper, Lower::Exclusive, Upper::Exclusive, false);
     }
 }

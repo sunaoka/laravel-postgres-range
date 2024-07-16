@@ -97,4 +97,82 @@ class DateRangeTest extends TestCase
         self::assertNull($actual[0]);
         self::assertNull($actual[1]);
     }
+
+    public function testToInclusive(): void
+    {
+        // [2020-10-01,2020-10-03] -> [2020-10-01,2020-10-03]
+        $actual = (new DateRange('2020-10-01', '2020-10-03', Lower::Inclusive, Upper::Inclusive, canonicalize: false))->toInclusive();
+        self::assertSame('[2020-10-01,2020-10-03]', (string) $actual);
+
+        // [2020-10-01,2020-10-03) -> [2020-10-01,2020-10-02]
+        $actual = (new DateRange('2020-10-01', '2020-10-03', Lower::Inclusive, Upper::Exclusive, canonicalize: false))->toInclusive();
+        self::assertSame('[2020-10-01,2020-10-02]', (string) $actual);
+
+        // (2020-10-01,2020-10-03] -> [2020-10-02,2020-10-03]
+        $actual = (new DateRange('2020-10-01', '2020-10-03', Lower::Exclusive, Upper::Inclusive, canonicalize: false))->toInclusive();
+        self::assertSame('[2020-10-02,2020-10-03]', (string) $actual);
+
+        // (2020-10-01,2020-10-03) -> [2020-10-02,2020-10-02]
+        $actual = (new DateRange('2020-10-01', '2020-10-03', Lower::Exclusive, Upper::Exclusive, canonicalize: false))->toInclusive();
+        self::assertSame('[2020-10-02,2020-10-02]', (string) $actual);
+
+        // [2020-10-01,) -> [2020-10-01,)
+        $actual = (new DateRange('2020-10-01', null, Lower::Inclusive, Upper::Exclusive, canonicalize: false))->toInclusive();
+        self::assertSame('[2020-10-01,)', (string) $actual);
+
+        // (2020-10-01,] -> [2020-10-02,)
+        $actual = (new DateRange('2020-10-01', null, Lower::Exclusive, Upper::Inclusive, canonicalize: false))->toInclusive();
+        self::assertSame('[2020-10-02,)', (string) $actual);
+
+        // (,2020-10-03] -> (,2020-10-03]
+        $actual = (new DateRange(null, '2020-10-03', Lower::Exclusive, Upper::Inclusive, canonicalize: false))->toInclusive();
+        self::assertSame('(,2020-10-03]', (string) $actual);
+
+        // [,2020-10-03) -> (,2020-10-02]
+        $actual = (new DateRange(null, '2020-10-03', Lower::Inclusive, Upper::Exclusive, canonicalize: false))->toInclusive();
+        self::assertSame('(,2020-10-02]', (string) $actual);
+
+        // [,) -> (,)
+        $actual = (new DateRange(null, null, Lower::Inclusive, Upper::Exclusive, canonicalize: false))->toInclusive();
+        self::assertSame('(,)', (string) $actual);
+    }
+
+    public function testToExclusive(): void
+    {
+        // [2020-10-01,2020-10-03] -> (2020-09-30,2020-10-04)
+        $actual = (new DateRange('2020-10-01', '2020-10-03', Lower::Inclusive, Upper::Inclusive, canonicalize: false))->toExclusive();
+        self::assertSame('(2020-09-30,2020-10-04)', (string) $actual);
+
+        // [2020-10-01,2020-10-03) -> (2020-09-30,2020-10-03)
+        $actual = (new DateRange('2020-10-01', '2020-10-03', Lower::Inclusive, Upper::Exclusive, canonicalize: false))->toExclusive();
+        self::assertSame('(2020-09-30,2020-10-03)', (string) $actual);
+
+        // (2020-10-01,2020-10-03] -> (2020-10-01,2020-10-04)
+        $actual = (new DateRange('2020-10-01', '2020-10-03', Lower::Exclusive, Upper::Inclusive, canonicalize: false))->toExclusive();
+        self::assertSame('(2020-10-01,2020-10-04)', (string) $actual);
+
+        // (2020-10-01,2020-10-03) -> (2020-10-01,2020-10-03)
+        $actual = (new DateRange('2020-10-01', '2020-10-03', Lower::Exclusive, Upper::Exclusive, canonicalize: false))->toExclusive();
+        self::assertSame('(2020-10-01,2020-10-03)', (string) $actual);
+
+        // [2020-10-01,) -> (2020-09-30,)
+        $actual = (new DateRange('2020-10-01', null, Lower::Inclusive, Upper::Exclusive, canonicalize: false))->toExclusive();
+        self::assertSame('(2020-09-30,)', (string) $actual);
+
+        // (2020-10-01,] -> (2020-10-01,)
+        $actual = (new DateRange('2020-10-01', null, Lower::Exclusive, Upper::Inclusive, canonicalize: false))->toExclusive();
+        self::assertSame('(2020-10-01,)', (string) $actual);
+
+        // (,2020-10-03] -> (,2020-10-04)
+        $actual = (new DateRange(null, '2020-10-03', Lower::Exclusive, Upper::Inclusive, canonicalize: false))->toExclusive();
+        self::assertSame('(,2020-10-04)', (string) $actual);
+
+        // [,2020-10-03) -> (,2020-10-03)
+        $actual = (new DateRange(null, '2020-10-03', Lower::Inclusive, Upper::Exclusive, canonicalize: false))->toExclusive();
+        self::assertSame('(,2020-10-03)', (string) $actual);
+
+        // [,) -> (,)
+        $actual = (new DateRange(null, null, Lower::Inclusive, Upper::Exclusive, canonicalize: false))->toExclusive();
+        self::assertSame('(,)', (string) $actual);
+    }
 }

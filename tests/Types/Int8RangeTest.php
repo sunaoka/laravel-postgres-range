@@ -88,4 +88,82 @@ class Int8RangeTest extends TestCase
         $actual = (new Int8Range(null, null, Lower::Inclusive, Upper::Exclusive))->toArray();
         self::assertSame([null, null], $actual);
     }
+
+    public function testToInclusive(): void
+    {
+        // [0,3] -> [0,3]
+        $actual = (new Int8Range(0, 3, Lower::Inclusive, Upper::Inclusive, canonicalize: false))->toInclusive();
+        self::assertSame('[0,3]', (string) $actual);
+
+        // [0,3) -> [0,2]
+        $actual = (new Int8Range(0, 3, Lower::Inclusive, Upper::Exclusive, canonicalize: false))->toInclusive();
+        self::assertSame('[0,2]', (string) $actual);
+
+        // (0,3] -> [1,3]
+        $actual = (new Int8Range(0, 3, Lower::Exclusive, Upper::Inclusive, canonicalize: false))->toInclusive();
+        self::assertSame('[1,3]', (string) $actual);
+
+        // (0,3) -> [1,2]
+        $actual = (new Int8Range(0, 3, Lower::Exclusive, Upper::Exclusive, canonicalize: false))->toInclusive();
+        self::assertSame('[1,2]', (string) $actual);
+
+        // [0,)  -> [0,)
+        $actual = (new Int8Range(0, null, Lower::Inclusive, Upper::Exclusive, canonicalize: false))->toInclusive();
+        self::assertSame('[0,)', (string) $actual);
+
+        // (0,]  -> [1,)
+        $actual = (new Int8Range(0, null, Lower::Exclusive, Upper::Inclusive, canonicalize: false))->toInclusive();
+        self::assertSame('[1,)', (string) $actual);
+
+        // (,3]  -> (,3]
+        $actual = (new Int8Range(null, 3, Lower::Exclusive, Upper::Inclusive, canonicalize: false))->toInclusive();
+        self::assertSame('(,3]', (string) $actual);
+
+        // [,3)  -> (,2]
+        $actual = (new Int8Range(null, 3, Lower::Inclusive, Upper::Exclusive, canonicalize: false))->toInclusive();
+        self::assertSame('(,2]', (string) $actual);
+
+        // [,)   -> (,)
+        $actual = (new Int8Range(null, null, Lower::Inclusive, Upper::Exclusive, canonicalize: false))->toInclusive();
+        self::assertSame('(,)', (string) $actual);
+    }
+
+    public function testToExclusive(): void
+    {
+        // [0,3] -> (-1,4)
+        $actual = (new Int8Range(0, 3, Lower::Inclusive, Upper::Inclusive, canonicalize: false))->toExclusive();
+        self::assertSame('(-1,4)', (string) $actual);
+
+        // [0,3) -> (-1,3)
+        $actual = (new Int8Range(0, 3, Lower::Inclusive, Upper::Exclusive, canonicalize: false))->toExclusive();
+        self::assertSame('(-1,3)', (string) $actual);
+
+        // (0,3] -> (0,4)
+        $actual = (new Int8Range(0, 3, Lower::Exclusive, Upper::Inclusive, canonicalize: false))->toExclusive();
+        self::assertSame('(0,4)', (string) $actual);
+
+        // (0,3) -> (0,3)
+        $actual = (new Int8Range(0, 3, Lower::Exclusive, Upper::Exclusive, canonicalize: false))->toExclusive();
+        self::assertSame('(0,3)', (string) $actual);
+
+        // [0,)  -> (-1,)
+        $actual = (new Int8Range(0, null, Lower::Inclusive, Upper::Exclusive, canonicalize: false))->toExclusive();
+        self::assertSame('(-1,)', (string) $actual);
+
+        // (0,]  -> (0,)
+        $actual = (new Int8Range(0, null, Lower::Exclusive, Upper::Inclusive, canonicalize: false))->toExclusive();
+        self::assertSame('(0,)', (string) $actual);
+
+        // (,3]  -> (,4)
+        $actual = (new Int8Range(null, 3, Lower::Exclusive, Upper::Inclusive, canonicalize: false))->toExclusive();
+        self::assertSame('(,4)', (string) $actual);
+
+        // [,3)  -> (,3)
+        $actual = (new Int8Range(null, 3, Lower::Inclusive, Upper::Exclusive, canonicalize: false))->toExclusive();
+        self::assertSame('(,3)', (string) $actual);
+
+        // [,)   -> (,)
+        $actual = (new Int8Range(null, null, Lower::Inclusive, Upper::Exclusive, canonicalize: false))->toExclusive();
+        self::assertSame('(,)', (string) $actual);
+    }
 }
