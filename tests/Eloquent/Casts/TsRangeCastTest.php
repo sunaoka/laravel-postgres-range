@@ -24,9 +24,9 @@ class TsRangeCastTest extends TestCase
     {
         $cast = new TsRangeCast();
 
-        $actual = $cast->get(new TestModel(), 'ts_range', '[2020-10-01 00:00:00,2020-10-01 23:59:59)', []);
+        $actual = $cast->get(new TestModel(), 'ts_range', '(2020-10-01 00:00:00,2020-10-01 23:59:59]', []);
         self::assertInstanceOf(TsRange::class, $actual);
-        self::assertSame('[2020-10-01 00:00:00,2020-10-01 23:59:59)', (string) $actual);
+        self::assertSame('("2020-10-01 00:00:00","2020-10-01 23:59:59"]', (string) $actual);
 
         $actual = $cast->get(new TestModel(), 'ts_range', '', []);
         self::assertNull($actual);
@@ -38,16 +38,16 @@ class TsRangeCastTest extends TestCase
         self::assertNull($actual);
 
         $actual = $cast->get(new TestModel(), 'ts_range', '[2020-10-01 00:00:00,)', []);
-        self::assertSame('[2020-10-01 00:00:00,)', (string) $actual);
+        self::assertSame('["2020-10-01 00:00:00",)', (string) $actual);
 
         $actual = $cast->get(new TestModel(), 'ts_range', '[,2020-10-01 23:59:59)', []);
-        self::assertSame('[,2020-10-01 23:59:59)', (string) $actual);
+        self::assertSame('(,"2020-10-01 23:59:59")', (string) $actual);
 
         $actual = $cast->get(new TestModel(), 'ts_range', '[2020-10-01 00:00:00,infinity)', []);
-        self::assertSame('[2020-10-01 00:00:00,)', (string) $actual);
+        self::assertSame('["2020-10-01 00:00:00",)', (string) $actual);
 
         Date::setTestNow('2020-10-01 12:34:56');
         $actual = $cast->get(new TestModel(), 'ts_range', '(now,infinity]', []);
-        self::assertSame('(2020-10-01 12:34:56,]', (string) $actual);
+        self::assertSame('("2020-10-01 12:34:56",)', (string) $actual);
     }
 }

@@ -7,85 +7,85 @@ namespace Sunaoka\LaravelPostgres\Tests\Types;
 use Sunaoka\LaravelPostgres\Tests\TestCase;
 use Sunaoka\LaravelPostgres\Types\Bounds\Lower;
 use Sunaoka\LaravelPostgres\Types\Bounds\Upper;
-use Sunaoka\LaravelPostgres\Types\Int4Range;
+use Sunaoka\LaravelPostgres\Types\Int8Range;
 
-class Int4RangeTest extends TestCase
+class Int8RangeTest extends TestCase
 {
     public function testToString(): void
     {
         // [0,3] -> [0,4)
-        $actual = new Int4Range(0, 3, Lower::Inclusive, Upper::Inclusive);
+        $actual = new Int8Range(0, 3, Lower::Inclusive, Upper::Inclusive);
         self::assertSame('[0,4)', (string) $actual);
 
         // [0,3) -> [0,3)
-        $actual = new Int4Range(0, 3, Lower::Inclusive, Upper::Exclusive);
+        $actual = new Int8Range(0, 3, Lower::Inclusive, Upper::Exclusive);
         self::assertSame('[0,3)', (string) $actual);
 
         // (0,3] -> [1,4)
-        $actual = new Int4Range(0, 3, Lower::Exclusive, Upper::Inclusive);
+        $actual = new Int8Range(0, 3, Lower::Exclusive, Upper::Inclusive);
         self::assertSame('[1,4)', (string) $actual);
 
         // (0,3) -> [1,3)
-        $actual = new Int4Range(0, 3, Lower::Exclusive, Upper::Exclusive);
+        $actual = new Int8Range(0, 3, Lower::Exclusive, Upper::Exclusive);
         self::assertSame('[1,3)', (string) $actual);
 
         // [0,)  -> [0,)
-        $actual = new Int4Range(0, null, Lower::Inclusive, Upper::Exclusive);
+        $actual = new Int8Range(0, null, Lower::Inclusive, Upper::Exclusive);
         self::assertSame('[0,)', (string) $actual);
 
         // (0,]  -> [1,)
-        $actual = new Int4Range(0, null, Lower::Exclusive, Upper::Inclusive);
+        $actual = new Int8Range(0, null, Lower::Exclusive, Upper::Inclusive);
         self::assertSame('[1,)', (string) $actual);
 
         // (,3]  -> (,4)
-        $actual = new Int4Range(null, 3, Lower::Exclusive, Upper::Inclusive);
+        $actual = new Int8Range(null, 3, Lower::Exclusive, Upper::Inclusive);
         self::assertSame('(,4)', (string) $actual);
 
         // [,3)  -> (,3)
-        $actual = new Int4Range(null, 3, Lower::Inclusive, Upper::Exclusive);
+        $actual = new Int8Range(null, 3, Lower::Inclusive, Upper::Exclusive);
         self::assertSame('(,3)', (string) $actual);
 
         // [,)   -> (,)
-        $actual = new Int4Range(null, null, Lower::Inclusive, Upper::Exclusive);
+        $actual = new Int8Range(null, null, Lower::Inclusive, Upper::Exclusive);
         self::assertSame('(,)', (string) $actual);
     }
 
     public function testToArray(): void
     {
         // [0,3] -> [0,4)
-        $actual = (new Int4Range(0, 3, Lower::Inclusive, Upper::Inclusive))->toArray();
+        $actual = (new Int8Range(0, 3, Lower::Inclusive, Upper::Inclusive))->toArray();
         self::assertSame([0, 4], $actual);
 
         // [0,3) -> [0,3)
-        $actual = (new Int4Range(0, 3, Lower::Inclusive, Upper::Exclusive))->toArray();
+        $actual = (new Int8Range(0, 3, Lower::Inclusive, Upper::Exclusive))->toArray();
         self::assertSame([0, 3], $actual);
 
         // (0,3] -> [1,4)
-        $actual = (new Int4Range(0, 3, Lower::Exclusive, Upper::Inclusive))->toArray();
+        $actual = (new Int8Range(0, 3, Lower::Exclusive, Upper::Inclusive))->toArray();
         self::assertSame([1, 4], $actual);
 
         // (0,3) -> [1,3)
-        $actual = (new Int4Range(0, 3, Lower::Exclusive, Upper::Exclusive))->toArray();
+        $actual = (new Int8Range(0, 3, Lower::Exclusive, Upper::Exclusive))->toArray();
         self::assertSame([1, 3], $actual);
 
         // [0,)  -> [0,)
-        $actual = (new Int4Range(0, null, Lower::Inclusive, Upper::Exclusive))->toArray();
+        $actual = (new Int8Range(0, null, Lower::Inclusive, Upper::Exclusive))->toArray();
         self::assertSame([0, null], $actual);
 
         // (0,]  -> [1,)
-        $actual = (new Int4Range(0, null, Lower::Exclusive, Upper::Inclusive))->toArray();
+        $actual = (new Int8Range(0, null, Lower::Exclusive, Upper::Inclusive))->toArray();
         self::assertSame([1, null], $actual);
 
         // (,3]  -> (,4)
-        $actual = (new Int4Range(null, 3, Lower::Exclusive, Upper::Inclusive))->toArray();
+        $actual = (new Int8Range(null, 3, Lower::Exclusive, Upper::Inclusive))->toArray();
         self::assertSame([null, 4], $actual);
 
         // [,3)  -> (,3)
-        $actual = (new Int4Range(null, 3, Lower::Inclusive, Upper::Exclusive))->toArray();
+        $actual = (new Int8Range(null, 3, Lower::Inclusive, Upper::Exclusive))->toArray();
         self::assertSame([null, 3], $actual);
 
         // [,)   -> (,)
-        $actual = (new Int4Range(null, null, Lower::Inclusive, Upper::Exclusive))->toArray();
+        $actual = (new Int8Range(null, null, Lower::Inclusive, Upper::Exclusive))->toArray();
         self::assertSame([null, null], $actual);
     }
 }
