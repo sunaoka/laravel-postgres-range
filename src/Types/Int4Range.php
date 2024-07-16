@@ -20,18 +20,25 @@ class Int4Range extends Range
         bool $canonicalize = true
     ) {
         if ($canonicalize) {
-            if ($lower !== null && $lowerBound === Lower::Exclusive) {
-                $lower++;
-                $lowerBound = Lower::Inclusive;
-            }
-
-            if ($upper !== null && $upperBound === Upper::Inclusive) {
-                $upper++;
-                $upperBound = Upper::Exclusive;
-            }
+            [$lower, $upper, $lowerBound, $upperBound] = $this->canonicalize($lower, $upper, $lowerBound, $upperBound);
         }
 
         parent::__construct($lower, $upper, $lowerBound, $upperBound);
+    }
+
+    protected function canonicalize(int|string|null $lower, int|string|null $upper, Lower $lowerBound, Upper $upperBound): array
+    {
+        if ($lower !== null && $lowerBound === Lower::Exclusive) {
+            $lower++;
+            $lowerBound = Lower::Inclusive;
+        }
+
+        if ($upper !== null && $upperBound === Upper::Inclusive) {
+            $upper++;
+            $upperBound = Upper::Exclusive;
+        }
+
+        return [$lower, $upper, $lowerBound, $upperBound];
     }
 
     protected function transform($boundary): int

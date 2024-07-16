@@ -27,18 +27,25 @@ class DateRange extends Range
         $this->format = $format;
 
         if ($canonicalize) {
-            if ($lower !== null && $lowerBound === Lower::Exclusive) {
-                $lower = Date::parse($lower)->addDay()->format($format);
-                $lowerBound = Lower::Inclusive;
-            }
-
-            if ($upper !== null && $upperBound === Upper::Inclusive) {
-                $upper = Date::parse($upper)->addDay()->format($format);
-                $upperBound = Upper::Exclusive;
-            }
+            [$lower, $upper, $lowerBound, $upperBound] = $this->canonicalize($lower, $upper, $lowerBound, $upperBound);
         }
 
         parent::__construct($lower, $upper, $lowerBound, $upperBound);
+    }
+
+    protected function canonicalize(?string $lower, ?string $upper, Lower $lowerBound, Upper $upperBound): array
+    {
+        if ($lower !== null && $lowerBound === Lower::Exclusive) {
+            $lower = Date::parse($lower)->addDay()->format($this->format);
+            $lowerBound = Lower::Inclusive;
+        }
+
+        if ($upper !== null && $upperBound === Upper::Inclusive) {
+            $upper = Date::parse($upper)->addDay()->format($this->format);
+            $upperBound = Upper::Exclusive;
+        }
+
+        return [$lower, $upper, $lowerBound, $upperBound];
     }
 
     /**
