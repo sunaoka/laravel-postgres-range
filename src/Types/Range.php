@@ -35,7 +35,11 @@ abstract class Range implements \Stringable, Arrayable
      */
     public function lower()
     {
-        return $this->lower !== null ? $this->transform($this->lower) : null;
+        if ($this->lower === null) {
+            return null;
+        }
+
+        return $this->transform($this->lower);
     }
 
     /**
@@ -45,13 +49,19 @@ abstract class Range implements \Stringable, Arrayable
      */
     public function upper()
     {
-        return $this->upper !== null ? $this->transform($this->upper) : null;
+        if ($this->upper === null) {
+            return null;
+        }
+
+        return $this->transform($this->upper);
     }
 
     /**
      * Alias of lower()
      *
      * @return TType|null
+     *
+     * @codeCoverageIgnore
      */
     public function from()
     {
@@ -62,6 +72,8 @@ abstract class Range implements \Stringable, Arrayable
      * Alias of upper()
      *
      * @return TType|null
+     *
+     * @codeCoverageIgnore
      */
     public function to()
     {
@@ -78,10 +90,23 @@ abstract class Range implements \Stringable, Arrayable
      * @param  TBound|null  $lower
      * @param  TBound|null  $upper
      */
-    public function __construct($lower = null, $upper = null, Lower $lowerBound = Lower::Inclusive, Upper $upperBound = Upper::Exclusive)
-    {
+    public function __construct(
+        $lower = null,
+        $upper = null,
+        Lower $lowerBound = Lower::Inclusive,
+        Upper $upperBound = Upper::Exclusive
+    ) {
         $this->lower = $lower;
         $this->upper = $upper;
+
+        if ($lower === null && $lowerBound === Lower::Inclusive) {
+            $lowerBound = Lower::Exclusive;
+        }
+
+        if ($upper === null && $upperBound === Upper::Inclusive) {
+            $upperBound = Upper::Exclusive;
+        }
+
         $this->bounds = new Bounds($lowerBound, $upperBound);
     }
 
@@ -91,27 +116,17 @@ abstract class Range implements \Stringable, Arrayable
     }
 
     /**
-     * @return self<TType, TBound>
-     */
-    public function toInclusive(): self
-    {
-        throw new \LogicException('Not implemented');
-    }
-
-    /**
-     * @return self<TType, TBound>
-     */
-    public function toExclusive(): self
-    {
-        throw new \LogicException('Not implemented');
-    }
-
-    /**
      * @return string
      */
     public function __toString()
     {
-        return "{$this->bounds()->lower()->value}{$this->lower()},{$this->upper()}{$this->bounds()->upper()->value}";
+        return sprintf(
+            '%s%s,%s%s',
+            $this->bounds()->lower()->value,
+            (string) $this->lower(),
+            (string) $this->upper(),
+            $this->bounds()->upper()->value
+        );
     }
 
     /**
@@ -119,6 +134,9 @@ abstract class Range implements \Stringable, Arrayable
      */
     public function toArray(): array
     {
-        return [$this->lower(), $this->upper()];
+        return [
+            $this->lower(),
+            $this->upper(),
+        ];
     }
 }

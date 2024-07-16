@@ -23,9 +23,9 @@ class Int4RangeCastTest extends TestCase
     {
         $cast = new Int4RangeCast();
 
-        $actual = $cast->get(new TestModel(), 'int4_range', '[1,3)', []);
+        $actual = $cast->get(new TestModel(), 'int4_range', '(1,3]', []);
         self::assertInstanceOf(Int4Range::class, $actual);
-        self::assertSame('[1,3)', (string) $actual);
+        self::assertSame('[2,4)', (string) $actual);
 
         $actual = $cast->get(new TestModel(), 'int4_range', '', []);
         self::assertNull($actual);
@@ -40,6 +40,6 @@ class Int4RangeCastTest extends TestCase
         self::assertSame('[1,)', (string) $actual);
 
         $actual = $cast->get(new TestModel(), 'int4_range', '[,10)', []);
-        self::assertSame('[,10)', (string) $actual);
+        self::assertSame('(,10)', (string) $actual);
     }
 }

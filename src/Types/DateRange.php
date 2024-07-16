@@ -12,21 +12,28 @@ use Sunaoka\LaravelPostgres\Types\Bounds\Upper;
 /**
  * @extends Range<Carbon, string>
  */
-class TsRange extends Range
+class DateRange extends Range
 {
     private string $format;
 
-    /**
-     * @param  string  $format  The format of the outputted date string
-     */
     public function __construct(
         $lower = null,
         $upper = null,
         Lower $lowerBound = Lower::Inclusive,
         Upper $upperBound = Upper::Exclusive,
-        string $format = 'Y-m-d H:i:s'
+        string $format = 'Y-m-d'
     ) {
         $this->format = $format;
+
+        if ($lower !== null && $lowerBound === Lower::Exclusive) {
+            $lower = Date::parse($lower)->addDay()->format($format);
+            $lowerBound = Lower::Inclusive;
+        }
+
+        if ($upper !== null && $upperBound === Upper::Inclusive) {
+            $upper = Date::parse($upper)->addDay()->format($format);
+            $upperBound = Upper::Exclusive;
+        }
 
         parent::__construct($lower, $upper, $lowerBound, $upperBound);
     }
@@ -43,12 +50,12 @@ class TsRange extends Range
     {
         $lower = '';
         if ($this->lower() !== null) {
-            $lower = sprintf('"%s"', $this->lower()->format($this->format));
+            $lower = sprintf('%s', $this->lower()->format($this->format));
         }
 
         $upper = '';
         if ($this->upper() !== null) {
-            $upper = sprintf('"%s"', $this->upper()->format($this->format));
+            $upper = sprintf('%s', $this->upper()->format($this->format));
         }
 
         return sprintf(

@@ -6,6 +6,4 @@ namespace Sunaoka\LaravelPostgres\Tests;
 
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
-class TestCase extends BaseTestCase
-{
-}
+class TestCase extends BaseTestCase {}
