@@ -116,6 +116,26 @@ abstract class Range implements \Stringable, Arrayable
     }
 
     /**
+     * @return self<TType, TBound>
+     *
+     * @codeCoverageIgnore
+     */
+    public function toInclusive(): self
+    {
+        throw new \LogicException('Not implemented');
+    }
+
+    /**
+     * @return self<TType, TBound>
+     *
+     * @codeCoverageIgnore
+     */
+    public function toExclusive(): self
+    {
+        throw new \LogicException('Not implemented');
+    }
+
+    /**
      * @return string
      */
     public function __toString()

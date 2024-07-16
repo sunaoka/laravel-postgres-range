@@ -21,18 +21,21 @@ class DateRange extends Range
         $upper = null,
         Lower $lowerBound = Lower::Inclusive,
         Upper $upperBound = Upper::Exclusive,
-        string $format = 'Y-m-d'
+        string $format = 'Y-m-d',
+        bool $canonicalize = true
     ) {
         $this->format = $format;
 
-        if ($lower !== null && $lowerBound === Lower::Exclusive) {
-            $lower = Date::parse($lower)->addDay()->format($format);
-            $lowerBound = Lower::Inclusive;
-        }
+        if ($canonicalize) {
+            if ($lower !== null && $lowerBound === Lower::Exclusive) {
+                $lower = Date::parse($lower)->addDay()->format($format);
+                $lowerBound = Lower::Inclusive;
+            }
 
-        if ($upper !== null && $upperBound === Upper::Inclusive) {
-            $upper = Date::parse($upper)->addDay()->format($format);
-            $upperBound = Upper::Exclusive;
+            if ($upper !== null && $upperBound === Upper::Inclusive) {
+                $upper = Date::parse($upper)->addDay()->format($format);
+                $upperBound = Upper::Exclusive;
+            }
         }
 
         parent::__construct($lower, $upper, $lowerBound, $upperBound);
@@ -44,6 +47,36 @@ class DateRange extends Range
     protected function transform($boundary): Carbon
     {
         return Date::parse($boundary);
+    }
+
+    public function toInclusive(): self
+    {
+        $lower = $this->lower();
+        if ($lower !== null && $this->bounds()->lower() === Lower::Exclusive) {
+            $lower = $lower->addDay();
+        }
+
+        $upper = $this->upper();
+        if ($upper !== null && $this->bounds()->upper() === Upper::Exclusive) {
+            $upper = $upper->subDay();
+        }
+
+        return new self($lower?->format($this->format), $upper?->format($this->format), Lower::Inclusive, Upper::Inclusive, $this->format, false);
+    }
+
+    public function toExclusive(): self
+    {
+        $lower = $this->lower();
+        if ($lower !== null && $this->bounds()->lower() === Lower::Inclusive) {
+            $lower = $lower->subDay();
+        }
+
+        $upper = $this->upper();
+        if ($upper !== null && $this->bounds()->upper() === Upper::Inclusive) {
+            $upper = $upper->addDay();
+        }
+
+        return new self($lower?->format($this->format), $upper?->format($this->format), Lower::Exclusive, Upper::Exclusive, $this->format, false);
     }
 
     public function __toString()
