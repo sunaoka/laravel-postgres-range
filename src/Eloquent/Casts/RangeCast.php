@@ -64,8 +64,12 @@ abstract class RangeCast implements CastsAttributes
             return [];
         }
 
-        /** @var array{0: string, 1: '['|'(', 2: string, 3: string, 4: ']'|')'} $matches */
-        if (strtolower($matches[3]) === 'infinity') {
+        /** @var array{string, '['|'(', string, string, ']'|')'} $matches */
+        if (strtolower($matches[2]) === '-infinity' || strtolower($matches[2]) === 'infinity') {
+            $matches[2] = null;
+        }
+
+        if (strtolower($matches[3]) === '-infinity' || strtolower($matches[3]) === 'infinity') {
             $matches[3] = null;
         }
 

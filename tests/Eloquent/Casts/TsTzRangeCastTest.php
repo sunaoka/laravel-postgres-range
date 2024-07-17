@@ -53,6 +53,9 @@ class TsTzRangeCastTest extends TestCase
         $actual = $cast->get(new TestModel(), 'ts_tz_range', '[2020-10-01 00:00:00,infinity)', []);
         self::assertSame('["2020-10-01 00:00:00+00:00",)', (string) $actual);
 
+        $actual = $cast->get(new TestModel(), 'ts_tz_range', '[-infinity,2020-10-01 23:59:59)', []);
+        self::assertSame('(,"2020-10-01 23:59:59+00:00")', (string) $actual);
+
         Date::setTestNow('2020-10-01 12:34:56+00:00');
         $actual = $cast->get(new TestModel(), 'ts_tz_range', '(now,infinity]', []);
         self::assertSame('("2020-10-01 12:34:56+00:00",)', (string) $actual);
