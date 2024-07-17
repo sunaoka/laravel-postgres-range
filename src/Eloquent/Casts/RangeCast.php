@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Sunaoka\LaravelPostgres\Eloquent\Casts;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+use Illuminate\Database\Eloquent\Model;
 use Sunaoka\LaravelPostgres\Types\Bounds\Lower;
 use Sunaoka\LaravelPostgres\Types\Bounds\Upper;
 use Sunaoka\LaravelPostgres\Types\Range;
@@ -20,7 +21,7 @@ abstract class RangeCast implements CastsAttributes
     /**
      * Transform the attribute from the underlying model values.
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param  Model  $model
      * @param  string|null  $value
      * @param  array<string, mixed>  $attributes
      * @return TGet|null
@@ -42,26 +43,33 @@ abstract class RangeCast implements CastsAttributes
     /**
      * Transform the attribute to its underlying model values.
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param  Model  $model
      * @param  TSet|null  $value
      * @param  array<string, mixed>  $attributes
      * @return null[]|string[]
      */
-    public function set($model, string $key, $value, array $attributes)
+    public function set($model, string $key, $value, array $attributes): array
     {
         return [
             $key => ($value !== null) ? (string) $value : null,
         ];
     }
 
+    /**
+     * @return array{string|null, string|null, Lower, Upper}|array{}
+     */
     protected function parse(string $value): array
     {
         if (preg_match('/([\[(])"?(.*?)"?,"?(.*?)"?([])])/', $value, $matches) !== 1) {
             return [];
         }
 
-        /** @var array{0: string, 1: '['|'(', 2: string, 3: string, 4: ']'|')'} $matches */
-        if (strtolower($matches[3]) === 'infinity') {
+        /** @var array{string, '['|'(', string, string, ']'|')'} $matches */
+        if (strtolower($matches[2]) === '-infinity' || strtolower($matches[2]) === 'infinity') {
+            $matches[2] = null;
+        }
+
+        if (strtolower($matches[3]) === '-infinity' || strtolower($matches[3]) === 'infinity') {
             $matches[3] = null;
         }
 
@@ -74,6 +82,7 @@ abstract class RangeCast implements CastsAttributes
     }
 
     /**
+     * @param  array{string|null, string|null, Lower, Upper}  $matches
      * @return TGet
      */
     abstract public function factory(array $matches): Range;

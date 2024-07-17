@@ -9,7 +9,7 @@ namespace Sunaoka\LaravelPostgres\Types;
  */
 class NumRange extends Range
 {
-    protected function transform($boundary): float
+    protected function transform(mixed $boundary): float
     {
         return (float) $boundary;
     }

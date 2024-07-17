@@ -9,9 +9,16 @@ use Sunaoka\LaravelPostgres\Types\Bounds\Upper;
 
 /**
  * @extends Range<int, int>
+ *
+ * @implements Contracts\Boundary<int>
  */
-class Int4Range extends Range
+class Int4Range extends Range implements Contracts\Boundary
 {
+    /**
+     * @use Concerns\Boundary<int|null>
+     */
+    use Concerns\Boundary;
+
     public function __construct(
         $lower = null,
         $upper = null,
@@ -20,52 +27,55 @@ class Int4Range extends Range
         bool $canonicalize = true
     ) {
         if ($canonicalize) {
-            if ($lower !== null && $lowerBound === Lower::Exclusive) {
-                $lower++;
-                $lowerBound = Lower::Inclusive;
+            if ($lower !== null) {
+                $lower = $this->transform($lower);
             }
 
-            if ($upper !== null && $upperBound === Upper::Inclusive) {
-                $upper++;
-                $upperBound = Upper::Exclusive;
+            if ($upper !== null) {
+                $upper = $this->transform($upper);
             }
+
+            [$lower, $lowerBound] = $this->toInclusiveLower($lower, $lowerBound);
+            [$upper, $upperBound] = $this->toExclusiveUpper($upper, $upperBound);
         }
 
         parent::__construct($lower, $upper, $lowerBound, $upperBound);
     }
 
-    protected function transform($boundary): int
+    protected function transform(mixed $boundary): int
     {
         return (int) $boundary;
     }
 
     public function toInclusive(): self
     {
-        $lower = $this->lower();
-        if ($lower !== null && $this->bounds()->lower() === Lower::Exclusive) {
-            $lower++;
-        }
+        [$lower, $lowerBound] = $this->toInclusiveLower($this->lower(), $this->bounds()->lower());
+        [$upper, $upperBound] = $this->toInclusiveUpper($this->upper(), $this->bounds()->upper());
 
-        $upper = $this->upper();
-        if ($upper !== null && $this->bounds()->upper() === Upper::Exclusive) {
-            $upper--;
-        }
-
-        return new self($lower, $upper, Lower::Inclusive, Upper::Inclusive, false);
+        return new self($lower, $upper, $lowerBound, $upperBound, false);
     }
 
     public function toExclusive(): self
     {
-        $lower = $this->lower();
-        if ($lower !== null && $this->bounds()->lower() === Lower::Inclusive) {
-            $lower--;
-        }
+        [$lower, $lowerBound] = $this->toExclusiveLower($this->lower(), $this->bounds()->lower());
+        [$upper, $upperBound] = $this->toExclusiveUpper($this->upper(), $this->bounds()->upper());
 
-        $upper = $this->upper();
-        if ($upper !== null && $this->bounds()->upper() === Upper::Inclusive) {
-            $upper++;
-        }
+        return new self($lower, $upper, $lowerBound, $upperBound, false);
+    }
 
-        return new self($lower, $upper, Lower::Exclusive, Upper::Exclusive, false);
+    /**
+     * @param  int|null  $value
+     */
+    public function inclement(mixed $value): ?int
+    {
+        return optional($value, static fn ($value): int => $value + 1);
+    }
+
+    /**
+     * @param  int|null  $value
+     */
+    public function decrement(mixed $value): ?int
+    {
+        return optional($value, static fn ($value): int => $value - 1);
     }
 }

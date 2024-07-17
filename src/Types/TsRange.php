@@ -10,7 +10,7 @@ use Sunaoka\LaravelPostgres\Types\Bounds\Lower;
 use Sunaoka\LaravelPostgres\Types\Bounds\Upper;
 
 /**
- * @extends Range<Carbon, string>
+ * @extends Range<Carbon|string, Carbon>
  */
 class TsRange extends Range
 {
@@ -34,7 +34,7 @@ class TsRange extends Range
     /**
      * @param  string  $boundary
      */
-    protected function transform($boundary): Carbon
+    protected function transform(mixed $boundary): Carbon
     {
         return Date::parse($boundary);
     }
