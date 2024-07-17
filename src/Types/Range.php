@@ -10,19 +10,19 @@ use Sunaoka\LaravelPostgres\Types\Bounds\Upper;
 
 /**
  * @template TType
- * @template TBound
+ * @template TValue
  *
  * @implements  Arrayable<int, TType|null>
  */
 abstract class Range implements \Stringable, Arrayable
 {
     /**
-     * @var TBound|null
+     * @var TType|null
      */
     protected $lower;
 
     /**
-     * @var TBound|null
+     * @var TType|null
      */
     protected $upper;
 
@@ -31,9 +31,9 @@ abstract class Range implements \Stringable, Arrayable
     /**
      * Get lower bound
      *
-     * @return TType|null
+     * @return TValue|null
      */
-    public function lower()
+    public function lower(): mixed
     {
         if ($this->lower === null) {
             return null;
@@ -45,9 +45,9 @@ abstract class Range implements \Stringable, Arrayable
     /**
      * Get upper bound
      *
-     * @return TType|null
+     * @return TValue|null
      */
-    public function upper()
+    public function upper(): mixed
     {
         if ($this->upper === null) {
             return null;
@@ -59,11 +59,11 @@ abstract class Range implements \Stringable, Arrayable
     /**
      * Alias of lower()
      *
-     * @return TType|null
+     * @return TValue|null
      *
      * @codeCoverageIgnore
      */
-    public function from()
+    public function from(): mixed
     {
         return $this->lower();
     }
@@ -71,24 +71,24 @@ abstract class Range implements \Stringable, Arrayable
     /**
      * Alias of upper()
      *
-     * @return TType|null
+     * @return TValue|null
      *
      * @codeCoverageIgnore
      */
-    public function to()
+    public function to(): mixed
     {
         return $this->upper();
     }
 
     /**
-     * @param  TBound  $boundary
-     * @return TType
+     * @param  TType  $boundary
+     * @return TValue
      */
-    abstract protected function transform($boundary);
+    abstract protected function transform(mixed $boundary): mixed;
 
     /**
-     * @param  TBound|null  $lower
-     * @param  TBound|null  $upper
+     * @param  TType|null  $lower
+     * @param  TType|null  $upper
      */
     public function __construct(
         $lower = null,
@@ -116,7 +116,7 @@ abstract class Range implements \Stringable, Arrayable
     }
 
     /**
-     * @return self<TType, TBound>
+     * @return self<TType, TValue>
      *
      * @codeCoverageIgnore
      */
@@ -126,7 +126,7 @@ abstract class Range implements \Stringable, Arrayable
     }
 
     /**
-     * @return self<TType, TBound>
+     * @return self<TType, TValue>
      *
      * @codeCoverageIgnore
      */
@@ -150,7 +150,7 @@ abstract class Range implements \Stringable, Arrayable
     }
 
     /**
-     * @return array<int, TType|null>
+     * @return array<int, TValue|null>
      */
     public function toArray(): array
     {

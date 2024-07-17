@@ -10,9 +10,11 @@ use Sunaoka\LaravelPostgres\Types\Bounds\Lower;
 use Sunaoka\LaravelPostgres\Types\Bounds\Upper;
 
 /**
- * @extends Range<Carbon, string>
+ * @extends Range<Carbon|string, Carbon>
+ *
+ * @implements Contracts\Boundary<Carbon>
  */
-class DateRange extends Range
+class DateRange extends Range implements Contracts\Boundary
 {
     /**
      * @use Concerns\Boundary<Carbon|null>
@@ -31,10 +33,15 @@ class DateRange extends Range
     ) {
         $this->format = $format;
 
-        $lower = optional($lower, $this->transform(...));
-        $upper = optional($upper, $this->transform(...));
-
         if ($canonicalize) {
+            if ($lower !== null && ! $lower instanceof Carbon) {
+                $lower = $this->transform($lower);
+            }
+
+            if ($upper !== null && ! $upper instanceof Carbon) {
+                $upper = $this->transform($upper);
+            }
+
             [$lower, $lowerBound] = $this->toInclusiveLower($lower, $lowerBound);
             [$upper, $upperBound] = $this->toExclusiveUpper($upper, $upperBound);
         }
@@ -45,7 +52,7 @@ class DateRange extends Range
     /**
      * @param  string  $boundary
      */
-    protected function transform($boundary): Carbon
+    protected function transform(mixed $boundary): Carbon
     {
         return Date::parse($boundary);
     }
@@ -90,7 +97,7 @@ class DateRange extends Range
     /**
      * @param  Carbon|null  $value
      */
-    private function inclement(mixed $value): ?Carbon
+    public function inclement(mixed $value): ?Carbon
     {
         return $value?->addDay();
     }
@@ -98,7 +105,7 @@ class DateRange extends Range
     /**
      * @param  Carbon|null  $value
      */
-    private function decrement(mixed $value): ?Carbon
+    public function decrement(mixed $value): ?Carbon
     {
         return $value?->subDay();
     }

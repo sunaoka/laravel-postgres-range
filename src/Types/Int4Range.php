@@ -9,8 +9,10 @@ use Sunaoka\LaravelPostgres\Types\Bounds\Upper;
 
 /**
  * @extends Range<int, int>
+ *
+ * @implements Contracts\Boundary<int>
  */
-class Int4Range extends Range
+class Int4Range extends Range implements Contracts\Boundary
 {
     /**
      * @use Concerns\Boundary<int|null>
@@ -24,10 +26,15 @@ class Int4Range extends Range
         Upper $upperBound = Upper::Exclusive,
         bool $canonicalize = true
     ) {
-        $lower = optional($lower, $this->transform(...));
-        $upper = optional($upper, $this->transform(...));
-
         if ($canonicalize) {
+            if ($lower !== null) {
+                $lower = $this->transform($lower);
+            }
+
+            if ($upper !== null) {
+                $upper = $this->transform($upper);
+            }
+
             [$lower, $lowerBound] = $this->toInclusiveLower($lower, $lowerBound);
             [$upper, $upperBound] = $this->toExclusiveUpper($upper, $upperBound);
         }
@@ -35,7 +42,7 @@ class Int4Range extends Range
         parent::__construct($lower, $upper, $lowerBound, $upperBound);
     }
 
-    protected function transform($boundary): int
+    protected function transform(mixed $boundary): int
     {
         return (int) $boundary;
     }
@@ -59,7 +66,7 @@ class Int4Range extends Range
     /**
      * @param  int|null  $value
      */
-    private function inclement(mixed $value): ?int
+    public function inclement(mixed $value): ?int
     {
         return optional($value, static fn ($value): int => $value + 1);
     }
@@ -67,7 +74,7 @@ class Int4Range extends Range
     /**
      * @param  int|null  $value
      */
-    private function decrement(mixed $value): ?int
+    public function decrement(mixed $value): ?int
     {
         return optional($value, static fn ($value): int => $value - 1);
     }
