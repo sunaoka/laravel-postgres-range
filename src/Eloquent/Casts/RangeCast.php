@@ -21,11 +21,12 @@ abstract class RangeCast implements CastsAttributes
     /**
      * Transform the attribute from the underlying model values.
      *
+     * @param  Model  $model
      * @param  string|null  $value
      * @param  array<string, mixed>  $attributes
      * @return TGet|null
      */
-    public function get(Model $model, string $key, $value, array $attributes)
+    public function get($model, string $key, $value, array $attributes)
     {
         if ($value === null) {
             return null;
@@ -42,11 +43,12 @@ abstract class RangeCast implements CastsAttributes
     /**
      * Transform the attribute to its underlying model values.
      *
+     * @param  Model  $model
      * @param  TSet|null  $value
      * @param  array<string, mixed>  $attributes
      * @return null[]|string[]
      */
-    public function set(Model $model, string $key, $value, array $attributes): array
+    public function set($model, string $key, $value, array $attributes): array
     {
         return [
             $key => ($value !== null) ? (string) $value : null,
