@@ -13,7 +13,7 @@ class BoundsTest extends TestCase
 {
     public function testToArray(): void
     {
-        $bounds = new Bounds();
+        $bounds = new Bounds;
         self::assertSame([Lower::Inclusive, Upper::Exclusive], $bounds->toArray());
     }
 }
