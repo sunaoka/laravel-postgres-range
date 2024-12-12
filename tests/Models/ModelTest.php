@@ -16,7 +16,7 @@ use Sunaoka\LaravelPostgres\Types\TsTzRange;
 
 class ModelTest extends TestCase
 {
-    public function testCast(): void
+    public function test_cast(): void
     {
         $model = new TestModel;
 

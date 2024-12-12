@@ -18,7 +18,7 @@ class TsTzRangeTest extends TestCase
         date_default_timezone_set('Asia/Tokyo');
     }
 
-    public function testToString(): void
+    public function test_to_string(): void
     {
         // [2020-10-01 00:00:00+09:00,2020-10-01 23:59:59+09:00] -> ["2020-09-30 15:00:00+00:00","2020-10-01 14:59:59+00:00"]
         $actual = new TsTzRange('2020-10-01 00:00:00+09:00', '2020-10-01 23:59:59+09:00', Lower::Inclusive, Upper::Inclusive, timezone: 'UTC');
@@ -57,7 +57,7 @@ class TsTzRangeTest extends TestCase
         self::assertSame('(,)', (string) $actual);
     }
 
-    public function testToArray(): void
+    public function test_to_array(): void
     {
         // [2020-10-01 00:00:00+09:00,2020-10-01 23:59:59+09:00] -> ["2020-09-30 15:00:00+00:00","2020-10-01 14:59:59+00:00"]
         $actual = (new TsTzRange('2020-10-01 00:00:00+09:00', '2020-10-01 23:59:59+09:00', Lower::Inclusive, Upper::Inclusive, timezone: 'UTC'))->toArray();

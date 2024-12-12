@@ -11,7 +11,7 @@ use Sunaoka\LaravelPostgres\Types\Int8Range;
 
 class Int8RangeCastTest extends TestCase
 {
-    public function testSet(): void
+    public function test_set(): void
     {
         $cast = new Int8RangeCast;
         $actual = $cast->set(new TestModel, 'int8_range', '[1,3)', []);
@@ -19,7 +19,7 @@ class Int8RangeCastTest extends TestCase
         self::assertSame('[1,3)', $actual['int8_range']);
     }
 
-    public function testGet(): void
+    public function test_get(): void
     {
         $cast = new Int8RangeCast;
 

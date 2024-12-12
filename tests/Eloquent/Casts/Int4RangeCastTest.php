@@ -11,7 +11,7 @@ use Sunaoka\LaravelPostgres\Types\Int4Range;
 
 class Int4RangeCastTest extends TestCase
 {
-    public function testSet(): void
+    public function test_set(): void
     {
         $cast = new Int4RangeCast;
         $actual = $cast->set(new TestModel, 'int4_range', '[1,3)', []);
@@ -19,7 +19,7 @@ class Int4RangeCastTest extends TestCase
         self::assertSame('[1,3)', $actual['int4_range']);
     }
 
-    public function testGet(): void
+    public function test_get(): void
     {
         $cast = new Int4RangeCast;
 

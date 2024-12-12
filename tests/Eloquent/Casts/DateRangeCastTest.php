@@ -12,7 +12,7 @@ use Sunaoka\LaravelPostgres\Types\DateRange;
 
 class DateRangeCastTest extends TestCase
 {
-    public function testSet(): void
+    public function test_set(): void
     {
         $cast = new DateRangeCast;
         $actual = $cast->set(new TestModel, 'date_range', '[2020-10-01,2020-10-03)', []);
@@ -20,7 +20,7 @@ class DateRangeCastTest extends TestCase
         self::assertSame('[2020-10-01,2020-10-03)', $actual['date_range']);
     }
 
-    public function testGet(): void
+    public function test_get(): void
     {
         $cast = new DateRangeCast;
 

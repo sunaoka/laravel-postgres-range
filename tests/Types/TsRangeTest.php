@@ -11,7 +11,7 @@ use Sunaoka\LaravelPostgres\Types\TsRange;
 
 class TsRangeTest extends TestCase
 {
-    public function testToString(): void
+    public function test_to_string(): void
     {
         // [2020-10-01 00:00:00,2020-10-01 23:59:59] -> ["2020-10-01 00:00:00","2020-10-01 23:59:59"]
         $actual = new TsRange('2020-10-01 00:00:00', '2020-10-01 23:59:59', Lower::Inclusive, Upper::Inclusive);
@@ -50,7 +50,7 @@ class TsRangeTest extends TestCase
         self::assertSame('(,)', (string) $actual);
     }
 
-    public function testToArray(): void
+    public function test_to_array(): void
     {
         // [2020-10-01 00:00:00,2020-10-01 23:59:59] -> ["2020-10-01 00:00:00","2020-10-01 23:59:59"]
         $actual = (new TsRange('2020-10-01 00:00:00', '2020-10-01 23:59:59', Lower::Inclusive, Upper::Inclusive))->toArray();

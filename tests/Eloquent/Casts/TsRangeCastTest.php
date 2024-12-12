@@ -12,7 +12,7 @@ use Sunaoka\LaravelPostgres\Types\TsRange;
 
 class TsRangeCastTest extends TestCase
 {
-    public function testSet(): void
+    public function test_set(): void
     {
         $cast = new TsRangeCast;
         $actual = $cast->set(new TestModel, 'ts_range', '[2020-10-01 00:00:00,2020-10-01 23:59:59)', []);
@@ -20,7 +20,7 @@ class TsRangeCastTest extends TestCase
         self::assertSame('[2020-10-01 00:00:00,2020-10-01 23:59:59)', $actual['ts_range']);
     }
 
-    public function testGet(): void
+    public function test_get(): void
     {
         $cast = new TsRangeCast;
 

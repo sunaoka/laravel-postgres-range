@@ -11,7 +11,7 @@ use Sunaoka\LaravelPostgres\Types\NumRange;
 
 class NumRangeCastTest extends TestCase
 {
-    public function testSet(): void
+    public function test_set(): void
     {
         $cast = new NumRangeCast;
         $actual = $cast->set(new TestModel, 'num_range', '[0.1,0.3)', []);
@@ -19,7 +19,7 @@ class NumRangeCastTest extends TestCase
         self::assertSame('[0.1,0.3)', $actual['num_range']);
     }
 
-    public function testGet(): void
+    public function test_get(): void
     {
         $cast = new NumRangeCast;
 

@@ -11,7 +11,7 @@ use Sunaoka\LaravelPostgres\Types\DateRange;
 
 class DateRangeTest extends TestCase
 {
-    public function testToString(): void
+    public function test_to_string(): void
     {
         // [2020-10-01,2020-10-03] -> [2020-10-01,2020-10-04)
         $actual = new DateRange('2020-10-01', '2020-10-03', Lower::Inclusive, Upper::Inclusive);
@@ -50,7 +50,7 @@ class DateRangeTest extends TestCase
         self::assertSame('(,)', (string) $actual);
     }
 
-    public function testToArray(): void
+    public function test_to_array(): void
     {
         // [2020-10-01,2020-10-03] -> [2020-10-01,2020-10-04)
         $actual = (new DateRange('2020-10-01', '2020-10-03', Lower::Inclusive, Upper::Inclusive))->toArray();
@@ -98,7 +98,7 @@ class DateRangeTest extends TestCase
         self::assertNull($actual[1]);
     }
 
-    public function testToInclusive(): void
+    public function test_to_inclusive(): void
     {
         // [2020-10-01,2020-10-03] -> [2020-10-01,2020-10-03]
         $actual = (new DateRange('2020-10-01', '2020-10-03', Lower::Inclusive, Upper::Inclusive, canonicalize: false))->toInclusive();
@@ -137,7 +137,7 @@ class DateRangeTest extends TestCase
         self::assertSame('(,)', (string) $actual);
     }
 
-    public function testToExclusive(): void
+    public function test_to_exclusive(): void
     {
         // [2020-10-01,2020-10-03] -> (2020-09-30,2020-10-04)
         $actual = (new DateRange('2020-10-01', '2020-10-03', Lower::Inclusive, Upper::Inclusive, canonicalize: false))->toExclusive();

@@ -19,7 +19,7 @@ class TsTzRangeCastTest extends TestCase
         date_default_timezone_set('UTC');
     }
 
-    public function testSet(): void
+    public function test_set(): void
     {
         $cast = new TsTzRangeCast;
         $actual = $cast->set(new TestModel, 'ts_tz_range', '[2020-10-01 00:00:00,2020-10-01 23:59:59)', []);
@@ -27,7 +27,7 @@ class TsTzRangeCastTest extends TestCase
         self::assertSame('[2020-10-01 00:00:00,2020-10-01 23:59:59)', $actual['ts_tz_range']);
     }
 
-    public function testGet(): void
+    public function test_get(): void
     {
         $cast = new TsTzRangeCast;
 
