@@ -19,7 +19,6 @@ use Sunaoka\LaravelPostgres\Types\TsRange;
 use Sunaoka\LaravelPostgres\Types\TsTzRange;
 
 /**
- * @property array $json
  * @property TsRange $ts_range
  * @property TsTzRange $ts_tz_range
  * @property DateRange $date_range

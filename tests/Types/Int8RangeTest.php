@@ -11,7 +11,7 @@ use Sunaoka\LaravelPostgres\Types\Int8Range;
 
 class Int8RangeTest extends TestCase
 {
-    public function testToString(): void
+    public function test_to_string(): void
     {
         // [0,3] -> [0,4)
         $actual = new Int8Range(0, 3, Lower::Inclusive, Upper::Inclusive);
@@ -50,7 +50,7 @@ class Int8RangeTest extends TestCase
         self::assertSame('(,)', (string) $actual);
     }
 
-    public function testToArray(): void
+    public function test_to_array(): void
     {
         // [0,3] -> [0,4)
         $actual = (new Int8Range(0, 3, Lower::Inclusive, Upper::Inclusive))->toArray();
@@ -89,7 +89,7 @@ class Int8RangeTest extends TestCase
         self::assertSame([null, null], $actual);
     }
 
-    public function testToInclusive(): void
+    public function test_to_inclusive(): void
     {
         // [0,3] -> [0,3]
         $actual = (new Int8Range(0, 3, Lower::Inclusive, Upper::Inclusive, canonicalize: false))->toInclusive();
@@ -128,7 +128,7 @@ class Int8RangeTest extends TestCase
         self::assertSame('(,)', (string) $actual);
     }
 
-    public function testToExclusive(): void
+    public function test_to_exclusive(): void
     {
         // [0,3] -> (-1,4)
         $actual = (new Int8Range(0, 3, Lower::Inclusive, Upper::Inclusive, canonicalize: false))->toExclusive();

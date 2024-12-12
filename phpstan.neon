@@ -9,3 +9,6 @@ parameters:
     paths:
         - src/
         - tests/
+
+    ignoreErrors:
+        - identifier: cast.string

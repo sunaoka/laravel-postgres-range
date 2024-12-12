@@ -11,7 +11,7 @@ use Sunaoka\LaravelPostgres\Types\NumRange;
 
 class NumRangeTest extends TestCase
 {
-    public function testToString(): void
+    public function test_to_string(): void
     {
         // [0.1,3.1] -> [0.1,3.1]
         $actual = new NumRange(0.1, 3.1, Lower::Inclusive, Upper::Inclusive);
@@ -50,7 +50,7 @@ class NumRangeTest extends TestCase
         self::assertSame('(,)', (string) $actual);
     }
 
-    public function testToArray(): void
+    public function test_to_array(): void
     {
         // [0.1,3.1] -> [0.1,3.1]
         $actual = (new NumRange(0.1, 3.1, Lower::Inclusive, Upper::Inclusive))->toArray();

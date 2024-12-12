@@ -11,35 +11,35 @@ use Sunaoka\LaravelPostgres\Types\Int4Range;
 
 class Int4RangeCastTest extends TestCase
 {
-    public function testSet(): void
+    public function test_set(): void
     {
-        $cast = new Int4RangeCast();
-        $actual = $cast->set(new TestModel(), 'int4_range', '[1,3)', []);
+        $cast = new Int4RangeCast;
+        $actual = $cast->set(new TestModel, 'int4_range', '[1,3)', []);
 
         self::assertSame('[1,3)', $actual['int4_range']);
     }
 
-    public function testGet(): void
+    public function test_get(): void
     {
-        $cast = new Int4RangeCast();
+        $cast = new Int4RangeCast;
 
-        $actual = $cast->get(new TestModel(), 'int4_range', '(1,3]', []);
+        $actual = $cast->get(new TestModel, 'int4_range', '(1,3]', []);
         self::assertInstanceOf(Int4Range::class, $actual);
         self::assertSame('[2,4)', (string) $actual);
 
-        $actual = $cast->get(new TestModel(), 'int4_range', '', []);
+        $actual = $cast->get(new TestModel, 'int4_range', '', []);
         self::assertNull($actual);
 
-        $actual = $cast->get(new TestModel(), 'int4_range', null, []);
+        $actual = $cast->get(new TestModel, 'int4_range', null, []);
         self::assertNull($actual);
 
-        $actual = $cast->get(new TestModel(), 'int4_range', 'malformed range literal', []);
+        $actual = $cast->get(new TestModel, 'int4_range', 'malformed range literal', []);
         self::assertNull($actual);
 
-        $actual = $cast->get(new TestModel(), 'int4_range', '[1,)', []);
+        $actual = $cast->get(new TestModel, 'int4_range', '[1,)', []);
         self::assertSame('[1,)', (string) $actual);
 
-        $actual = $cast->get(new TestModel(), 'int4_range', '[,10)', []);
+        $actual = $cast->get(new TestModel, 'int4_range', '[,10)', []);
         self::assertSame('(,10)', (string) $actual);
     }
 }

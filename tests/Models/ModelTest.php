@@ -16,9 +16,9 @@ use Sunaoka\LaravelPostgres\Types\TsTzRange;
 
 class ModelTest extends TestCase
 {
-    public function testCast(): void
+    public function test_cast(): void
     {
-        $model = new TestModel();
+        $model = new TestModel;
 
         $model->ts_range = new TsRange('2020-10-01 00:00:00', '2020-10-01 23:59:59', Lower::Inclusive, Upper::Exclusive);
         $model->ts_tz_range = new TsTzRange('2020-10-01 00:00:00', '2020-10-01 23:59:59', Lower::Inclusive, Upper::Exclusive);

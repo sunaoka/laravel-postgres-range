@@ -11,9 +11,9 @@ use Sunaoka\LaravelPostgres\Types\Bounds\Upper;
 
 class BoundsTest extends TestCase
 {
-    public function testToArray(): void
+    public function test_to_array(): void
     {
-        $bounds = new Bounds();
+        $bounds = new Bounds;
         self::assertSame([Lower::Inclusive, Upper::Exclusive], $bounds->toArray());
     }
 }
