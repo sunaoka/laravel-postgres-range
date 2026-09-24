@@ -1,4 +1,4 @@
-# PostgreSQL Range Types for Laravel 8.x to 12
+# PostgreSQL Range Types for Laravel 8.x to 13
 
 [![Latest Stable Version](https://poser.pugx.org/sunaoka/laravel-postgres-range/v/stable)](https://packagist.org/packages/sunaoka/laravel-postgres-range)
 [![License](https://poser.pugx.org/sunaoka/laravel-postgres-range/license)](https://packagist.org/packages/sunaoka/laravel-postgres-range)
